@@ -1098,7 +1098,8 @@
       "mentions": [
         {
           "place": "patriarch",
-          "note": "В песне упоминаются Патрики — Патриаршие пруды."
+          "quote": "Жёны публики честной\nБерут на Патриках туфельки",
+          "note": "Патрики — Патриаршие пруды."
         }
       ],
       "genius": false
@@ -1477,7 +1478,7 @@
       "id": 38,
       "artist": "Порнофильмы",
       "title": "Это пройдёт",
-      "genius": "https://genius.com/Pornofilmy-it-will-pass-lyrics",
+      "genius": false,
       "mentions": [
         {
           "place": "lefortovo-prison",
