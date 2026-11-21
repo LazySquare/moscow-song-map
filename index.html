@@ -1108,6 +1108,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
   }
 
   function geniusUrl(song) {
+    if (song.genius === false) return "";
     const direct = typeof song.genius === "string" && /^https:\/\/(www\.)?genius\.com\//i.test(song.genius);
     return direct ? song.genius : `https://genius.com/search?q=${encodeURIComponent(song.artist + " " + song.title)}`;
   }
@@ -1124,7 +1125,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     const body = element("article", "popup");
     body.append(element("p", "popup-type", place.type), element("h2", "", place.name));
     if (place.note) body.append(element("p", "popup-note", place.note));
-    if (!MAP_ROUTES[place.id] && map.getZoom() < placeZoom(place)) {
+    if (!place.path && !MAP_ROUTES[place.id] && map.getZoom() < placeZoom(place)) {
       const closer = element("button", "more-detail", "Показать вблизи");
       closer.type = "button";
       closer.addEventListener("click", () => showMarker(place));
@@ -1135,13 +1136,17 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
       const row = element("section", "mention");
       row.append(element("h3", "", song.artist), element("p", "track", song.title));
       for (const mention of mentions.filter((item) => item.song === id)) {
-        const quote = mention.quote.replaceAll("«", "„").replaceAll("»", "“");
-        row.append(element("blockquote", "", `«${quote}»`));
+        if (mention.quote) {
+          const quote = mention.quote.replaceAll("«", "„").replaceAll("»", "“");
+          row.append(element("blockquote", "", `«${quote}»`));
+        }
         if (mention.note) row.append(element("p", "mention-note", mention.note));
       }
-      const sources = element("div", "source-links");
-      sources.append(geniusLink(song));
-      row.append(sources);
+      if (song.genius !== false) {
+        const sources = element("div", "source-links");
+        sources.append(geniusLink(song));
+        row.append(sources);
+      }
       body.append(row);
     }
     return body;
@@ -1181,7 +1186,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
   }
 
   function placeZoom(place) {
-    if (MAP_ROUTES[place.id]) return 11;
+    if (place.path || MAP_ROUTES[place.id]) return 11;
     if (place.group === "district") return 14;
     return place.group === "landmark" || place.group === "transport" ? 17 : 16;
   }
@@ -1192,7 +1197,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     if (words.every((word) => placeText.includes(word))) return mentions;
     return mentions.filter((mention) => {
       const song = songsById.get(mention.song);
-      const haystack = placeText + " " + normalize([song.artist, song.title, mention.quote].join(" "));
+      const haystack = placeText + " " + normalize([song.artist, song.title, mention.quote, mention.note].join(" "));
       return words.every((word) => haystack.includes(word));
     });
   }
@@ -1229,7 +1234,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     marker.on("add", () => marker.getElement()?.setAttribute("aria-label", place.name));
     marker.on("popupopen", () => {
       setActive(place.id);
-      const path = MAP_ROUTES[place.id];
+      const path = place.path || MAP_ROUTES[place.id];
       if (path?.length) {
         const color = getComputedStyle(document.documentElement).getPropertyValue(`--${place.group}`).trim();
         highlightedPath = L.polyline(path, { color, weight: 4, opacity: .78, interactive: false }).addTo(map);
@@ -1324,7 +1329,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     for (const place of placeOrder) {
       for (const mention of mentionsByPlace.get(place.id)) {
         const song = songsById.get(mention.song);
-        rows.push([place.name, place.type, mention.quote, song.artist, song.title, geniusUrl(song),
+        rows.push([place.name, place.type, mention.quote || "", song.artist, song.title, geniusUrl(song),
           mention.note || place.note || "", ...place.point]);
       }
     }
@@ -1370,7 +1375,6 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
   notice.hidden = false;
   console.error(error);
 });
-
 </script>
 </body>
 </html>
