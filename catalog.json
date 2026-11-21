@@ -1,0 +1,1085 @@
+{
+  "places": [
+    {
+      "id": "tsum",
+      "name": "ЦУМ",
+      "type": "Универмаг",
+      "group": "landmark",
+      "point": [
+        55.7607,
+        37.6209
+      ]
+    },
+    {
+      "id": "kudrinskaya",
+      "name": "Кудринская высотка",
+      "type": "Здание на Кудринской площади",
+      "group": "landmark",
+      "point": [
+        55.7587,
+        37.581
+      ],
+      "aliases": [
+        "Баррикадная"
+      ]
+    },
+    {
+      "id": "mutabor",
+      "name": "Мутабор",
+      "type": "Клуб",
+      "group": "landmark",
+      "point": [
+        55.7192,
+        37.687
+      ],
+      "aliases": [
+        "Арма",
+        "Arma",
+        "Mutabor"
+      ],
+      "note": "Бывшее название клуба на Шарикоподшипниковской улице, 13, строение 32."
+    },
+    {
+      "id": "kremlin",
+      "name": "Московский Кремль",
+      "type": "Архитектурный ансамбль",
+      "group": "landmark",
+      "point": [
+        55.75125,
+        37.6181
+      ]
+    },
+    {
+      "id": "pokrovka",
+      "name": "Покровка",
+      "type": "Улица",
+      "group": "street",
+      "point": [
+        55.7587,
+        37.6447
+      ]
+    },
+    {
+      "id": "patriarch",
+      "name": "Патриаршие пруды",
+      "type": "Пруд и окрестности",
+      "group": "nature",
+      "point": [
+        55.7639,
+        37.5919
+      ],
+      "aliases": [
+        "Патрики",
+        "Патриарший пруд"
+      ]
+    },
+    {
+      "id": "lefortovo-prison",
+      "name": "Лефортовская тюрьма",
+      "type": "Следственный изолятор",
+      "group": "landmark",
+      "point": [
+        55.7614,
+        37.7058
+      ],
+      "aliases": [
+        "Лефортово",
+        "СИЗО"
+      ]
+    },
+    {
+      "id": "mkad",
+      "name": "МКАД",
+      "type": "Кольцевая автодорога",
+      "group": "street",
+      "point": [
+        55.74645,
+        37.36941
+      ],
+      "aliases": [
+        "Московская кольцевая автомобильная дорога"
+      ],
+      "note": "Метка привязана к одному участку кольцевой дороги."
+    },
+    {
+      "id": "bolotnaya",
+      "name": "Болотная площадь",
+      "type": "Площадь",
+      "group": "street",
+      "point": [
+        55.745,
+        37.6204
+      ],
+      "aliases": [
+        "Болотка"
+      ]
+    },
+    {
+      "id": "matrosskaya",
+      "name": "Матросская Тишина",
+      "type": "Следственный изолятор",
+      "group": "landmark",
+      "point": [
+        55.7917,
+        37.6975
+      ],
+      "aliases": [
+        "СИЗО"
+      ]
+    },
+    {
+      "id": "malaya-bronnaya",
+      "name": "Малая Бронная",
+      "type": "Улица",
+      "group": "street",
+      "point": [
+        55.7635,
+        37.5937
+      ]
+    },
+    {
+      "id": "city",
+      "name": "Москва-Сити",
+      "type": "Деловой квартал",
+      "group": "district",
+      "point": [
+        55.7488,
+        37.5345
+      ],
+      "aliases": [
+        "Москоу-Сити",
+        "Moscow City",
+        "ММДЦ"
+      ]
+    },
+    {
+      "id": "mausoleum",
+      "name": "Мавзолей Ленина",
+      "type": "Здание на Красной площади",
+      "group": "landmark",
+      "point": [
+        55.7537,
+        37.6199
+      ]
+    },
+    {
+      "id": "petrovka",
+      "name": "Петровка",
+      "type": "Улица",
+      "group": "street",
+      "point": [
+        55.7649,
+        37.6171
+      ]
+    },
+    {
+      "id": "ostankino",
+      "name": "Останкинская телебашня",
+      "type": "Телебашня",
+      "group": "landmark",
+      "point": [
+        55.81968,
+        37.61166
+      ],
+      "aliases": [
+        "Останкино",
+        "останкинский шприц"
+      ]
+    },
+    {
+      "id": "lubyanka",
+      "name": "Лубянская площадь",
+      "type": "Площадь",
+      "group": "street",
+      "point": [
+        55.7595,
+        37.6269
+      ],
+      "aliases": [
+        "Лубянка",
+        "ФСБ"
+      ]
+    },
+    {
+      "id": "vorobyovy",
+      "name": "Воробьёвы горы",
+      "type": "Местность",
+      "group": "nature",
+      "point": [
+        55.7107,
+        37.5437
+      ]
+    },
+    {
+      "id": "fili",
+      "name": "Фили",
+      "type": "Историческая местность",
+      "group": "district",
+      "point": [
+        55.7503,
+        37.5101
+      ]
+    },
+    {
+      "id": "pechatniki",
+      "name": "Печатники",
+      "type": "Район",
+      "group": "district",
+      "point": [
+        55.6826,
+        37.7275
+      ]
+    },
+    {
+      "id": "strogino",
+      "name": "Строгино",
+      "type": "Район",
+      "group": "district",
+      "point": [
+        55.8037,
+        37.4146
+      ]
+    },
+    {
+      "id": "garden-ring",
+      "name": "Садовое кольцо",
+      "type": "Кольцевая дорога",
+      "group": "street",
+      "point": [
+        55.72964,
+        37.61865
+      ],
+      "note": "Метка стоит на южном участке кольца."
+    },
+    {
+      "id": "volgogradskaya",
+      "name": "Волгоградский проспект",
+      "type": "Станция метро",
+      "group": "transport",
+      "point": [
+        55.725546,
+        37.685197
+      ],
+      "aliases": [
+        "Волгоградка"
+      ]
+    },
+    {
+      "id": "tekstilshchiki",
+      "name": "Текстильщики",
+      "type": "Станция метро",
+      "group": "transport",
+      "point": [
+        55.709211,
+        37.732117
+      ],
+      "aliases": [
+        "Текстили",
+        "Текстилями"
+      ]
+    },
+    {
+      "id": "kantemirovskaya",
+      "name": "Кантемировская",
+      "type": "Станция метро",
+      "group": "transport",
+      "point": [
+        55.636107,
+        37.656218
+      ]
+    },
+    {
+      "id": "kashirskaya",
+      "name": "Каширская",
+      "type": "Станция метро",
+      "group": "transport",
+      "point": [
+        55.655745,
+        37.649683
+      ]
+    },
+    {
+      "id": "uzao",
+      "name": "Юго-Западный округ",
+      "type": "Административный округ",
+      "group": "district",
+      "point": [
+        55.6492,
+        37.5298
+      ],
+      "aliases": [
+        "ЮЗАО"
+      ],
+      "note": "Метка показывает ориентир внутри округа."
+    },
+    {
+      "id": "svao",
+      "name": "Северо-Восточный округ",
+      "type": "Административный округ",
+      "group": "district",
+      "point": [
+        55.855,
+        37.624
+      ],
+      "aliases": [
+        "СВАО"
+      ],
+      "note": "Метка показывает ориентир внутри округа."
+    },
+    {
+      "id": "novodevichye",
+      "name": "Новодевичье кладбище",
+      "type": "Кладбище",
+      "group": "landmark",
+      "point": [
+        55.72472,
+        37.55417
+      ]
+    },
+    {
+      "id": "moskva-river",
+      "name": "Москва-река",
+      "type": "Река",
+      "group": "nature",
+      "point": [
+        55.74368,
+        37.60877
+      ],
+      "aliases": [
+        "река Москва",
+        "Москвы-реки",
+        "Moskva"
+      ],
+      "note": "Метка привязана к участку реки в центре города."
+    },
+    {
+      "id": "zamoskvoretskaya",
+      "name": "Замоскворецкая линия",
+      "type": "Линия метро",
+      "group": "transport",
+      "point": [
+        55.777439,
+        37.582107
+      ],
+      "aliases": [
+        "зелёная линия",
+        "линия 2"
+      ],
+      "note": "Линия показана схематично по станциям. На карте её современный маршрут."
+    },
+    {
+      "id": "sokolnicheskaya",
+      "name": "Сокольническая линия",
+      "type": "Линия метро",
+      "group": "transport",
+      "point": [
+        55.789282,
+        37.679895
+      ],
+      "aliases": [
+        "красная линия",
+        "линия 1"
+      ],
+      "note": "Линия показана схематично по станциям. На карте её современный маршрут."
+    },
+    {
+      "id": "gorky-park",
+      "name": "Парк Горького",
+      "type": "Парк",
+      "group": "nature",
+      "point": [
+        55.7286,
+        37.6036
+      ],
+      "aliases": [
+        "Gorky Park",
+        "ЦПКиО"
+      ]
+    },
+    {
+      "id": "skolkovo",
+      "name": "Сколково",
+      "type": "Инновационный центр",
+      "group": "district",
+      "point": [
+        55.6938,
+        37.3469
+      ],
+      "note": "В карточке отмечен инновационный центр в Москве. В песне уточнения нет."
+    },
+    {
+      "id": "presnya",
+      "name": "Пресня",
+      "type": "Историческая местность",
+      "group": "district",
+      "point": [
+        55.7621,
+        37.5683
+      ],
+      "aliases": [
+        "Красная Пресня",
+        "Пресненский район"
+      ]
+    },
+    {
+      "id": "barrikadnaya",
+      "name": "Баррикадная",
+      "type": "Улица и станция метро",
+      "group": "street",
+      "point": [
+        55.760793,
+        37.581242
+      ],
+      "note": "Метка стоит у станции на одноимённой улице."
+    },
+    {
+      "id": "federation",
+      "name": "Башня «Федерация»",
+      "type": "Небоскрёб",
+      "group": "landmark",
+      "point": [
+        55.749693,
+        37.537539
+      ]
+    },
+    {
+      "id": "msu",
+      "name": "МГУ имени М. В. Ломоносова",
+      "type": "Университет",
+      "group": "landmark",
+      "point": [
+        55.7032,
+        37.5304
+      ],
+      "aliases": [
+        "МГУ",
+        "Московский государственный университет"
+      ],
+      "note": "Метка стоит у главного здания университета."
+    },
+    {
+      "id": "malaya-ordynka",
+      "name": "Малая Ордынка",
+      "type": "Улица",
+      "group": "street",
+      "point": [
+        55.7372,
+        37.6256
+      ]
+    },
+    {
+      "id": "kursky",
+      "name": "Курский вокзал",
+      "type": "Железнодорожный вокзал",
+      "group": "transport",
+      "point": [
+        55.7573,
+        37.6608
+      ],
+      "aliases": [
+        "Курская",
+        "на Курском"
+      ]
+    },
+    {
+      "id": "arbat",
+      "name": "Арбат",
+      "type": "Улица",
+      "group": "street",
+      "point": [
+        55.7499,
+        37.5956
+      ],
+      "aliases": [
+        "Старый Арбат"
+      ]
+    },
+    {
+      "id": "tverskoy",
+      "name": "Тверской бульвар",
+      "type": "Бульвар",
+      "group": "street",
+      "point": [
+        55.763,
+        37.6017
+      ],
+      "aliases": [
+        "Тверской",
+        "Тверская"
+      ]
+    },
+    {
+      "id": "karetny",
+      "name": "Большой Каретный переулок",
+      "type": "Переулок",
+      "group": "street",
+      "point": [
+        55.7718,
+        37.6154
+      ]
+    },
+    {
+      "id": "lefortovo",
+      "name": "Лефортово",
+      "type": "Район",
+      "group": "district",
+      "point": [
+        55.7544,
+        37.6959
+      ]
+    },
+    {
+      "id": "butovo",
+      "name": "Бутово",
+      "type": "Местность",
+      "group": "district",
+      "point": [
+        55.5579,
+        37.5764
+      ],
+      "aliases": [
+        "Северное Бутово",
+        "Южное Бутово"
+      ],
+      "note": "В песне не уточняется, о какой части Бутова речь. Метка служит ориентиром."
+    }
+  ],
+  "songs": [
+    {
+      "id": 1,
+      "artist": "Oxxxymiron",
+      "title": "Грязь",
+      "mentions": [
+        {
+          "place": "tsum",
+          "quote": "цацки из ЦУМ’а"
+        },
+        {
+          "place": "kudrinskaya",
+          "quote": "Строки монументальней высотки на Баррикадной"
+        },
+        {
+          "place": "mutabor",
+          "quote": "в Мутаборе"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "artist": "Oxxxymiron",
+      "title": "Под дождём",
+      "mentions": [
+        {
+          "place": "kremlin",
+          "quote": "На контуры башен Кремля"
+        },
+        {
+          "place": "pokrovka",
+          "quote": "2-0-1-8, Покровка, начало апреля…"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "artist": "Oxxxymiron",
+      "title": "Окно в Париж",
+      "mentions": [
+        {
+          "place": "patriarch",
+          "quote": "Dom Perignon из берегов на Патриаршие пруды"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "artist": "Би-2, Oxxxymiron",
+      "title": "Пора возвращаться домой",
+      "genius": "https://genius.com/2-bi-2-time-to-go-home-lyrics",
+      "mentions": [
+        {
+          "place": "lefortovo-prison",
+          "quote": "Здесь пусть не комфорт, но и не Лефортово",
+          "note": "Лефортово прочитано как отсылка к изолятору."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "artist": "Oxxxymiron",
+      "title": "Город под подошвой",
+      "genius": "https://genius.com/Oxxxymiron-city-under-the-sole-lyrics",
+      "mentions": [
+        {
+          "place": "mkad",
+          "quote": "Хоть по МКАДу на старт, хоть на Мадагаскар"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "artist": "Oxxxymiron",
+      "title": "Кто убил Марка?",
+      "mentions": [
+        {
+          "place": "bolotnaya",
+          "quote": "Болотка, Pussy Riot, репрессии, Украина",
+          "note": "«Болотка» отсылает к протестам на Болотной площади."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "artist": "Oxxxymiron, Самариддин Раджабов",
+      "title": "Ветер перемен",
+      "mentions": [
+        {
+          "place": "matrosskaya",
+          "quote": "Матросская Тишина, Москва видна в щёлку"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "artist": "Oxxxymiron",
+      "title": "Песенка гремлина",
+      "mentions": [
+        {
+          "place": "malaya-bronnaya",
+          "quote": "В клубе на Малой Бронной блюю под Ивана Дорна"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "artist": "Oxxxymiron, Брутто",
+      "title": "Прекрасное далёко",
+      "mentions": [
+        {
+          "place": "city",
+          "quote": "Пока ехал на самокате по Moscow City я",
+          "note": "Moscow City здесь прочитано как название делового квартала."
+        },
+        {
+          "place": "mausoleum",
+          "quote": "мимо мавзолея"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "artist": "Noize MC",
+      "title": "Сельма Лагерлёф",
+      "mentions": [
+        {
+          "place": "petrovka",
+          "quote": "Весенняя Петровка, обманчивое тепло"
+        },
+        {
+          "place": "city",
+          "quote": "Отвезите из Москоу-Сити, yeah"
+        },
+        {
+          "place": "ostankino",
+          "quote": "останкинский шприц",
+          "note": "Образ Останкинской телебашни."
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "artist": "Noize MC",
+      "title": "Песня предателя",
+      "mentions": [
+        {
+          "place": "lubyanka",
+          "quote": "И пусть на Лубянке проверят внимательно",
+          "note": "«На Лубянке» здесь отсылает к спецслужбам. Метка стоит у их здания на площади."
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "artist": "Noize MC",
+      "title": "Атлантида",
+      "mentions": [
+        {
+          "place": "vorobyovy",
+          "quote": "Воробьёвы, Фили и Печатники"
+        },
+        {
+          "place": "fili",
+          "quote": "Воробьёвы, Фили и Печатники"
+        },
+        {
+          "place": "pechatniki",
+          "quote": "Воробьёвы, Фили и Печатники"
+        },
+        {
+          "place": "strogino",
+          "quote": "Строгино"
+        },
+        {
+          "place": "garden-ring",
+          "quote": "Садовым кольцом"
+        },
+        {
+          "place": "volgogradskaya",
+          "quote": "Волгоградкой и Текстилями",
+          "note": "В контексте поездки «Волгоградка» прочитана как название станции."
+        },
+        {
+          "place": "tekstilshchiki",
+          "quote": "Волгоградкой и Текстилями",
+          "note": "«Текстили» прочитаны как соседняя станция «Текстильщики»."
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "artist": "Noize MC",
+      "title": "Кантемировская",
+      "mentions": [
+        {
+          "place": "kantemirovskaya",
+          "quote": "Следующая станция: «Кантемировская»"
+        },
+        {
+          "place": "kashirskaya",
+          "quote": "Следующая станция «Каширская»",
+          "note": "Каширская слышна в объявлении в конце трека."
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "artist": "Noize MC",
+      "title": "Инстинкт",
+      "mentions": [
+        {
+          "place": "mkad",
+          "quote": "За МКАДом, в ЮЗАО"
+        },
+        {
+          "place": "uzao",
+          "quote": "За МКАДом, в ЮЗАО"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "artist": "Noize MC",
+      "title": "+−0",
+      "mentions": [
+        {
+          "place": "novodevichye",
+          "quote": "Кто-то на Ячнево, а кто-то на Новодевичьем"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "artist": "Noize MC",
+      "title": "Не надо было",
+      "mentions": [
+        {
+          "place": "mkad",
+          "quote": "Остановка где-то далеко за МКАД-ом"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "artist": "Noize MC, Влади",
+      "title": "Нероссия",
+      "mentions": [
+        {
+          "place": "moskva-river",
+          "quote": "Отходы из Москвы-реки родными стали моим жабрам"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "artist": "Noize MC",
+      "title": "Москва не резиновая",
+      "genius": "https://genius.com/Noize-mc-moscow-aint-rubber-lyrics",
+      "mentions": [
+        {
+          "place": "zamoskvoretskaya",
+          "quote": "Замоскворецкая линия"
+        },
+        {
+          "place": "sokolnicheskaya",
+          "quote": "Сокольнической"
+        },
+        {
+          "place": "mkad",
+          "quote": "И МКАДа тесную шкуру сбросив, как змея"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "artist": "Scorpions",
+      "title": "Wind of Change",
+      "genius": "https://genius.com/Scorpions-wind-of-change-lyrics",
+      "mentions": [
+        {
+          "place": "moskva-river",
+          "quote": "I follow the Moskva\nDown to Gorky Park"
+        },
+        {
+          "place": "gorky-park",
+          "quote": "I follow the Moskva\nDown to Gorky Park"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "artist": "Кровосток",
+      "title": "Ленин",
+      "mentions": [
+        {
+          "place": "mausoleum",
+          "quote": "Я лежал в мавзолее тюленем"
+        },
+        {
+          "place": "kremlin",
+          "quote": "И моё воцаренье в Кремле"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "artist": "PIZZA",
+      "title": "Романс",
+      "mentions": [
+        {
+          "place": "skolkovo",
+          "quote": "Вдребезги мост. Осколки Сколково."
+        },
+        {
+          "place": "presnya",
+          "quote": "Про знаменитый переход на Пресне",
+          "note": "Переход в тексте не назван. Метка показывает Пресню."
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "artist": "PIZZA",
+      "title": "Оружие",
+      "mentions": [
+        {
+          "place": "barrikadnaya",
+          "quote": "Между Баррикадной и Пресней",
+          "note": "В этой расшифровке звучит «Баррикадной». В других источниках встречается «баррикадой»."
+        },
+        {
+          "place": "presnya",
+          "quote": "Между Баррикадной и Пресней"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "artist": "Big Baby Tape, kizaru",
+      "title": "Big Tymers",
+      "mentions": [
+        {
+          "place": "city",
+          "quote": "чем Москва Сити"
+        },
+        {
+          "place": "msu",
+          "quote": "Эта ho, блядь, на первом курсе МГУ"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "artist": "Big Baby Tape, Aarne",
+      "title": "Training Day",
+      "mentions": [
+        {
+          "place": "federation",
+          "quote": "Башня федерации. Моё начало"
+        },
+        {
+          "place": "uzao",
+          "quote": "ЮЗАО, вы где? СВАО, вы где?"
+        },
+        {
+          "place": "svao",
+          "quote": "ЮЗАО, вы где? СВАО, вы где?"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "artist": "Хаски",
+      "title": "Колобок",
+      "mentions": [
+        {
+          "place": "msu",
+          "quote": "я опускаю водник спайса в общежитье МГУ",
+          "note": "Какое именно общежитие, в тексте не сказано."
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "artist": "Хаски",
+      "title": "Иуда",
+      "mentions": [
+        {
+          "place": "patriarch",
+          "quote": "В чьей-то в хате на Патриарших"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "artist": "Порнофильмы",
+      "title": "Это пройдёт",
+      "genius": "https://genius.com/Pornofilmy-it-will-pass-lyrics",
+      "mentions": [
+        {
+          "place": "lefortovo-prison",
+          "quote": "И с петель срежут двери в Лефортово"
+        },
+        {
+          "place": "lefortovo-prison",
+          "quote": "Как Лефортовские коридоры"
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "artist": "Hi-Fi",
+      "title": "Седьмой лепесток",
+      "mentions": [
+        {
+          "place": "malaya-ordynka",
+          "quote": "Ты по Малой Ордынке, по Крещатику я"
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "artist": "Гио Пика, Пиковый & Бэнд",
+      "title": "У Курского вокзала",
+      "mentions": [
+        {
+          "place": "kursky",
+          "quote": "У Курского вокзала стояла ты и ждала"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "artist": "Из фильма «Кортик»",
+      "title": "У Курского вокзала",
+      "mentions": [
+        {
+          "place": "kursky",
+          "quote": "У Курского вокзала стою я, молодой"
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "artist": "Никита Михалков",
+      "title": "Я шагаю по Москве",
+      "mentions": [
+        {
+          "place": "garden-ring",
+          "quote": "А в них блестит Садовое кольцо",
+          "note": "Строфа из расширенного текста песни."
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "artist": "Глеб Самойлов & The Matrixx",
+      "title": "Москва-река",
+      "mentions": [
+        {
+          "place": "moskva-river",
+          "quote": "Москва — река, Москва — река"
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "artist": "Муслим Магомаев",
+      "title": "Лучший город Земли",
+      "mentions": [
+        {
+          "place": "arbat",
+          "quote": "И пройдись по Арбату"
+        },
+        {
+          "place": "tverskoy",
+          "quote": "на Тверском в шум зелёных аллей",
+          "note": "«Тверской» прочитан как бульвар по форме «на Тверском» и упоминанию аллей."
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "artist": "Владимир Высоцкий",
+      "title": "Большой Каретный",
+      "mentions": [
+        {
+          "place": "karetny",
+          "quote": "Кто в Большом Каретном не бывал"
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "artist": "Anacondaz",
+      "title": "Поколение",
+      "mentions": [
+        {
+          "place": "ostankino",
+          "quote": "Будет трясти хуем на шпиле Останкино"
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "artist": "Palc",
+      "title": "Гриб",
+      "mentions": [
+        {
+          "place": "kursky",
+          "quote": "Бомжи на Курском хором поют «Welcome»"
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "artist": "MEDIOCRIT, просто Лера",
+      "title": "Палата номер 2",
+      "mentions": [
+        {
+          "place": "lefortovo",
+          "quote": "Я жду тебя в Лефортово, палата номер 2"
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "artist": "просто Лера",
+      "title": "Адик",
+      "mentions": [
+        {
+          "place": "butovo",
+          "quote": "Простая девчонка из Бутова"
+        }
+      ]
+    }
+  ]
+}
