@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="yandex-tiles-key" content="">
   <meta name="theme-color" content="#171623">
   <meta name="description" content="Интерактивная карта московских мест, упомянутых в песнях.">
   <meta name="author" content="LazySquare">
@@ -760,10 +761,14 @@ h1 span { color: var(--violet); }
 .map-button:hover, .leaflet-control-zoom a:hover { background: #3d3450 !important; }
 .map-switch { display: flex; align-items: stretch; border-radius: 8px; box-shadow: 0 2px 9px #0005; }
 .map-switch .map-button { box-shadow: none; }
-.map-switch .map-button:first-child { border-radius: 8px 0 0 8px; }
+.map-switch .map-button:first-child, #yandex-map[hidden] + .osm-map { border-radius: 8px 0 0 8px; }
+.map-switch .map-button:not([hidden]) + .map-button { border-left: 0; }
 .map-switch .map-button:last-child { border-radius: 0 8px 8px 0; border-left: 0; }
+.map-switch:has(#yandex-map:not([hidden])) .osm-map { border-radius: 0; }
 .map-switch .map-button[aria-pressed="true"] { background: #6241a5 !important; }
 .map-button:disabled { opacity: .55; cursor: default; }
+.yandex-logo { position: absolute; z-index: 450; bottom: 0; left: 0; }
+.yandex-logo img { display: block; width: 88px; height: 48px; }
 .leaflet-control-zoom.leaflet-bar { border: 1px solid #4b425b; border-radius: 8px; overflow: hidden; }
 .leaflet-control-zoom a.leaflet-disabled { opacity: .55; }
 .map-notice { position: absolute; z-index: 500; left: 12px; bottom: 28px; max-width: calc(100% - 24px); color: white; background: #282234; border: 1px solid #5f516d; border-radius: 8px; padding: 8px 12px; font-size: .875rem; }
@@ -825,7 +830,6 @@ dialog::backdrop { background: #161221b8; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation-duration: 0s !important; }
 }
-
 </style>
   
   
@@ -862,7 +866,8 @@ dialog::backdrop { background: #161221b8; }
       <div id="map"></div>
       <div class="map-toolbar">
         <div class="map-switch" role="group" aria-label="Подложка карты">
-          <button id="detailed-map" class="map-button" type="button" aria-pressed="false">Подробная</button>
+          <button id="yandex-map" class="map-button" type="button" aria-pressed="false" hidden>Яндекс</button>
+          <button id="detailed-map" class="map-button osm-map" type="button" aria-pressed="false">Подробная</button>
           <button id="scheme-map" class="map-button" type="button" aria-pressed="true">Схема</button>
         </div>
         <button id="fit-map" class="map-button" type="button">Показать все</button>
@@ -1030,55 +1035,88 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     keyboard: false,
     icon: L.divIcon({ className: "map-label", html: element("span", "", name), iconSize: [0, 0] }),
   })));
-  const detailButton = byId("detailed-map");
-  const schemeButton = byId("scheme-map");
   const mapNotice = byId("map-notice");
-  const canLoadTiles = location.protocol === "https:" || location.protocol === "http:";
-  const detailLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  const layerButtons = new Map([
+    ["yandex", byId("yandex-map")],
+    ["osm", byId("detailed-map")],
+    ["scheme", byId("scheme-map")],
+  ]);
+  const canLoadTiles = ["https:", "http:"].includes(location.protocol);
+  const yandexKey = document.querySelector('meta[name="yandex-tiles-key"]')?.content.trim();
+  const tileOptions = {
     minZoom: 9,
     maxNativeZoom: 19,
     referrerPolicy: "strict-origin-when-cross-origin",
-  });
-  let detailed = false;
+  };
+  const tileLayers = new Map([
+    ["osm", L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", tileOptions)],
+  ]);
+  const yandexLogo = element("a", "yandex-logo");
+  yandexLogo.href = "https://yandex.ru/maps/";
+  yandexLogo.target = "_blank";
+  yandexLogo.rel = "noopener";
+  yandexLogo.hidden = true;
+  if (canLoadTiles && yandexKey) {
+    tileLayers.set("yandex", L.tileLayer(
+      "https://tiles.api-maps.yandex.ru/v1/tiles/?x={x}&y={y}&z={z}&lang=ru_RU&l=map" +
+      "&maptype=map&projection=web_mercator&apikey=" + encodeURIComponent(yandexKey),
+      tileOptions,
+    ));
+    const logo = element("img");
+    logo.src = "./yandex-logo.png";
+    logo.alt = "Яндекс Карты";
+    yandexLogo.append(logo);
+    byId("map").after(yandexLogo);
+    layerButtons.get("yandex").hidden = false;
+    layerButtons.get("osm").textContent = "OpenStreetMap";
+  }
+  let basemap = "scheme";
   let tileTimeout;
   let tilesArrived = false;
 
   function updateLabels() {
-    if ((!detailed || !tilesArrived) && map.getZoom() >= 10) labels.addTo(map);
+    if ((basemap === "scheme" || !tilesArrived) && map.getZoom() >= 10) labels.addTo(map);
     else labels.remove();
   }
 
-  function chooseLayer(useDetail, failed = false) {
+  function chooseLayer(next, message = "") {
     clearTimeout(tileTimeout);
-    detailed = useDetail;
+    const previous = tileLayers.get(basemap);
+    basemap = next;
     tilesArrived = false;
-    detailButton.setAttribute("aria-pressed", String(useDetail));
-    schemeButton.setAttribute("aria-pressed", String(!useDetail));
-    mapNotice.hidden = !failed;
-    if (failed) mapNotice.textContent = "Подробная карта не загрузилась. Включена схема.";
-    if (useDetail) detailLayer.addTo(map);
-    else detailLayer.remove();
+    for (const [id, button] of layerButtons) button.setAttribute("aria-pressed", String(id === next));
+    mapNotice.hidden = !message;
+    mapNotice.textContent = message;
+    yandexLogo.hidden = next !== "yandex";
+    previous?.remove();
+    tileLayers.get(next)?.addTo(map);
     updateLabels();
   }
 
-  detailLayer.on("loading", () => {
-    tilesArrived = false;
-    clearTimeout(tileTimeout);
-    tileTimeout = setTimeout(() => {
-      if (detailed && !tilesArrived) chooseLayer(false, true);
-    }, 8000);
-  });
-  detailLayer.on("tileload", () => {
-    tilesArrived = true;
-    clearTimeout(tileTimeout);
-    updateLabels();
-  });
-  detailLayer.on("load", () => {
-    if (detailed && !tilesArrived) chooseLayer(false, true);
-  });
-  detailButton.disabled = !canLoadTiles;
-  detailButton.addEventListener("click", () => { if (!detailed) chooseLayer(true); });
-  schemeButton.addEventListener("click", () => chooseLayer(false));
+  for (const [id, tileLayer] of tileLayers) {
+    const fallBack = () => {
+      if (basemap !== id || tilesArrived) return;
+      if (id === "yandex") chooseLayer("osm", "Яндекс Карты не загрузились. Включена OpenStreetMap.");
+      else chooseLayer("scheme", "Подробная карта не загрузилась. Включена схема.");
+    };
+    tileLayer.on("loading", () => {
+      if (basemap !== id) return;
+      tilesArrived = false;
+      clearTimeout(tileTimeout);
+      tileTimeout = setTimeout(fallBack, 8000);
+    });
+    tileLayer.on("tileload", () => {
+      if (basemap !== id) return;
+      tilesArrived = true;
+      clearTimeout(tileTimeout);
+      updateLabels();
+    });
+    tileLayer.on("load", fallBack);
+  }
+  layerButtons.get("osm").disabled = !canLoadTiles;
+  for (const [id, button] of layerButtons) {
+    button.addEventListener("click", () => { if (basemap !== id) chooseLayer(id); });
+  }
   map.on("zoomend", updateLabels);
 
   function element(tag, className, value) {
@@ -1367,7 +1405,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
 
   render();
   fitMap();
-  chooseLayer(canLoadTiles);
+  chooseLayer(!canLoadTiles ? "scheme" : tileLayers.has("yandex") ? "yandex" : "osm");
   if (placesById.has(deepLink)) showMarker(placesById.get(deepLink));
 })().catch((error) => {
   const notice = document.getElementById("map-notice");
