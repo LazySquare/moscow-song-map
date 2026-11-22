@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta name="yandex-tiles-key" content="6fd1d5cb-89ec-47a0-b7c7-e066c3f26dcf">
+  <meta name="yandex-js-api-key" content="6fd1d5cb-89ec-47a0-b7c7-e066c3f26dcf">
   <meta name="theme-color" content="#171623">
   <meta name="description" content="Интерактивная карта московских мест, упомянутых в песнях.">
   <meta name="author" content="LazySquare">
@@ -767,8 +767,15 @@ h1 span { color: var(--violet); }
 .map-switch:has(#yandex-map:not([hidden])) .osm-map { border-radius: 0; }
 .map-switch .map-button[aria-pressed="true"] { background: #6241a5 !important; }
 .map-button:disabled { opacity: .55; cursor: default; }
-.yandex-logo { position: absolute; z-index: 450; bottom: 0; left: 0; }
-.yandex-logo img { display: block; width: 88px; height: 48px; }
+.yandex-canvas { position: absolute; inset: 0; z-index: 410; background: #ece8ee; }
+.yandex-canvas.loading { visibility: hidden; }
+.yandex-pin { display: block; width: 30px; height: 30px; padding: 0; transform: translate(-50%, -50%); }
+.yandex-cluster { width: 32px; height: 32px; padding: 0; transform: translate(-50%, -50%); }
+.yandex-popup { position: absolute; z-index: 480; top: 66px; left: 12px; width: min(330px, calc(100% - 24px)); max-height: calc(100% - 128px); overflow: auto; overscroll-behavior: contain; border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 3px 15px #0004; }
+.yandex-popup > button { position: absolute; top: 6px; right: 8px; background: white; color: #442e61; border: 0; padding: 2px 6px; font-size: 1.25rem; }
+#yandex-popup-content { padding: 14px 16px; overflow-wrap: anywhere; }
+.yandex-zoom { display: grid; gap: 1px; }
+.yandex-zoom button { width: 34px; height: 34px; padding: 0; font-size: 1.2rem; }
 .leaflet-control-zoom.leaflet-bar { border: 1px solid #4b425b; border-radius: 8px; overflow: hidden; }
 .leaflet-control-zoom a.leaflet-disabled { opacity: .55; }
 .map-notice { position: absolute; z-index: 500; left: 12px; bottom: 28px; max-width: calc(100% - 24px); color: white; background: #282234; border: 1px solid #5f516d; border-radius: 8px; padding: 8px 12px; font-size: .875rem; }
@@ -785,10 +792,10 @@ h1 span { color: var(--violet); }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #fff; color: var(--ink); }
 .leaflet-popup-content-wrapper { border-radius: 12px; }
 .leaflet-popup-content { margin: 14px 16px; max-width: min(315px, 73vw); overflow-wrap: anywhere; }
-.leaflet-popup-content .popup-type { margin: 0 23px 5px 0; font-size: .8rem; color: var(--muted); }
+.popup .popup-type { margin: 0 23px 5px 0; font-size: .8rem; color: var(--muted); }
 .popup h2 { margin: 0 16px 10px 0; font-size: 1.12rem; line-height: 1.17; letter-spacing: -.025em; }
 .popup .more-detail { margin: 0 0 9px; padding: 0; border: 0; background: none; color: #582eb0; text-decoration: underline; text-underline-offset: 2px; font-size: .81rem; font-weight: 680; }
-.leaflet-popup-content .popup-note { margin: 4px 0 9px; color: var(--muted); font-size: .8rem; }
+.popup .popup-note { margin: 4px 0 9px; color: var(--muted); font-size: .8rem; }
 .mention { border-top: 1px solid var(--line); padding: 9px 0 3px; }
 .mention + .mention { margin-top: 8px; }
 .mention h3 { font-size: .85rem; line-height: 1.3; margin: 0; }
@@ -822,6 +829,7 @@ dialog::backdrop { background: #161221b8; }
   .map-panel { order: 1; height: 52vh; height: max(320px, 52svh); }
   .map-toolbar { top: 10px; right: 10px; left: 10px; }
   .map-toolbar .map-button { padding-inline: 9px; }
+  .yandex-popup { top: 60px; max-height: calc(100% - 112px); }
   .index-heading { order: 2; background: var(--paper); padding-inline: 15px; }
   .places { order: 3; background: var(--paper); padding-inline: 7px; overflow: initial; }
   .empty { order: 4; background: var(--paper); padding: 8px 15px 25px; }
@@ -864,6 +872,11 @@ dialog::backdrop { background: #161221b8; }
     </aside>
     <section class="map-panel" aria-label="Карта московских топонимов">
       <div id="map"></div>
+      <div id="yandex-canvas" class="yandex-canvas" hidden></div>
+      <div id="yandex-popup" class="yandex-popup" role="region" aria-label="Карточка места" hidden>
+        <button id="yandex-popup-close" type="button" aria-label="Закрыть карточку">×</button>
+        <div id="yandex-popup-content"></div>
+      </div>
       <div class="map-toolbar">
         <div class="map-switch" role="group" aria-label="Подложка карты">
           <button id="yandex-map" class="map-button" type="button" aria-pressed="false" hidden>Яндекс</button>
@@ -980,6 +993,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
   const filterButtons = new Map();
   const markers = new Map();
   const rowButtons = new Map();
+  const visibleMentions = new Map();
   const placesById = new Map(data.places.map((place) => [place.id, place]));
   const songs = data.songs.filter((song) => song.mentions.some(({ place }) => placesById.has(place)));
   const songsById = new Map(songs.map((song) => [song.id, song]));
@@ -995,7 +1009,10 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
   let highlightedPath;
   let visible = [];
 
-  const map = L.map("map", {
+  const leafletCanvas = byId("map");
+  const yandexCanvas = byId("yandex-canvas");
+  const yandexPopup = byId("yandex-popup");
+  const map = L.map(leafletCanvas, {
     center: [55.742, 37.613],
     zoom: 11,
     minZoom: 9,
@@ -1042,31 +1059,19 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     ["scheme", byId("scheme-map")],
   ]);
   const canLoadTiles = ["https:", "http:"].includes(location.protocol);
-  const yandexKey = document.querySelector('meta[name="yandex-tiles-key"]')?.content.trim();
-  const tileOptions = {
+  const yandexKey = document.querySelector('meta[name="yandex-js-api-key"]')?.content.trim();
+  const osmLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     minZoom: 9,
     maxNativeZoom: 19,
     referrerPolicy: "strict-origin-when-cross-origin",
-  };
-  const tileLayers = new Map([
-    ["osm", L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", tileOptions)],
-  ]);
-  const yandexLogo = element("a", "yandex-logo");
-  yandexLogo.href = "https://yandex.ru/maps/";
-  yandexLogo.target = "_blank";
-  yandexLogo.rel = "noopener";
-  yandexLogo.hidden = true;
+  });
+  let yandexMap;
+  let yandexReady;
+  let yandexCluster;
+  let yandexRoute;
+  let yandexRequest = 0;
+  const yandexMarkers = new Map();
   if (canLoadTiles && yandexKey) {
-    tileLayers.set("yandex", L.tileLayer(
-      "https://tiles.api-maps.yandex.ru/v1/tiles/?x={x}&y={y}&z={z}&lang=ru_RU&l=map" +
-      "&maptype=map&projection=web_mercator&apikey=" + encodeURIComponent(yandexKey),
-      tileOptions,
-    ));
-    const logo = element("img");
-    logo.src = "./yandex-logo.png";
-    logo.alt = "Яндекс Карты";
-    yandexLogo.append(logo);
-    byId("map").after(yandexLogo);
     layerButtons.get("yandex").hidden = false;
     layerButtons.get("osm").textContent = "OpenStreetMap";
   }
@@ -1079,43 +1084,67 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     else labels.remove();
   }
 
-  function chooseLayer(next, message = "") {
-    clearTimeout(tileTimeout);
-    const previous = tileLayers.get(basemap);
-    basemap = next;
-    tilesArrived = false;
-    for (const [id, button] of layerButtons) button.setAttribute("aria-pressed", String(id === next));
+  function showNotice(message) {
     mapNotice.hidden = !message;
     mapNotice.textContent = message;
-    yandexLogo.hidden = next !== "yandex";
-    previous?.remove();
-    tileLayers.get(next)?.addTo(map);
+  }
+
+  function setLayer(next) {
+    basemap = next;
+    for (const [id, button] of layerButtons) button.setAttribute("aria-pressed", String(id === next));
+    leafletCanvas.hidden = next === "yandex";
+    yandexCanvas.hidden = next !== "yandex";
+  }
+
+  function chooseLeaflet(next, message = "", cancelYandex = true) {
+    if (cancelYandex) ++yandexRequest;
+    const selected = activePlace;
+    const fromYandex = basemap === "yandex";
+    const previous = basemap;
+    if (fromYandex) closeYandexPopup();
+    yandexCanvas.classList.remove("loading");
+    setLayer(next);
+    showNotice(message);
+    if (next !== previous) clearTimeout(tileTimeout);
+    if (next !== "osm") osmLayer.remove();
+    else if (!map.hasLayer(osmLayer)) {
+      tilesArrived = false;
+      osmLayer.addTo(map);
+    }
+    if (fromYandex) {
+      map.invalidateSize({ pan: false });
+      if (selected) showMarker(placesById.get(selected));
+      else if (yandexMap?.center) {
+        const [lng, lat] = yandexMap.center;
+        map.setView([lat, lng], Math.round(yandexMap.zoom));
+      }
+    }
     updateLabels();
   }
 
-  for (const [id, tileLayer] of tileLayers) {
-    const fallBack = () => {
-      if (basemap !== id || tilesArrived) return;
-      if (id === "yandex") chooseLayer("osm", "Яндекс Карты не загрузились. Включена OpenStreetMap.");
-      else chooseLayer("scheme", "Подробная карта не загрузилась. Включена схема.");
-    };
-    tileLayer.on("loading", () => {
-      if (basemap !== id) return;
-      tilesArrived = false;
-      clearTimeout(tileTimeout);
-      tileTimeout = setTimeout(fallBack, 8000);
-    });
-    tileLayer.on("tileload", () => {
-      if (basemap !== id) return;
-      tilesArrived = true;
-      clearTimeout(tileTimeout);
-      updateLabels();
-    });
-    tileLayer.on("load", fallBack);
+  function fallbackFromOsm() {
+    if (basemap === "osm" && !tilesArrived) {
+      chooseLeaflet("scheme", "Подробная карта не загрузилась. Включена схема.", false);
+    }
   }
+
+  osmLayer.on("loading", () => {
+    tilesArrived = false;
+    clearTimeout(tileTimeout);
+    tileTimeout = setTimeout(fallbackFromOsm, 8000);
+  });
+  osmLayer.on("tileload", () => {
+    tilesArrived = true;
+    clearTimeout(tileTimeout);
+    updateLabels();
+  });
+  osmLayer.on("load", fallbackFromOsm);
   layerButtons.get("osm").disabled = !canLoadTiles;
   for (const [id, button] of layerButtons) {
-    button.addEventListener("click", () => { if (basemap !== id) chooseLayer(id); });
+    button.addEventListener("click", () => {
+      if (id === "yandex" && basemap !== id) openYandex();
+      else if (id !== "yandex") chooseLeaflet(id);
+    });
   }
   map.on("zoomend", updateLabels);
 
@@ -1124,6 +1153,176 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     if (className) node.className = className;
     if (value) node.textContent = value;
     return node;
+  }
+
+  function loadYandex() {
+    if (yandexReady) return yandexReady;
+    yandexReady = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      const timeout = setTimeout(fail, 10000);
+      function fail() {
+        clearTimeout(timeout);
+        script.remove();
+        reject(new Error("Yandex Maps API unavailable"));
+      }
+      script.referrerPolicy = "strict-origin-when-cross-origin";
+      script.src = "https://api-maps.yandex.ru/v3/?lang=ru_RU&apikey=" + encodeURIComponent(yandexKey);
+      script.onerror = fail;
+      script.onload = async () => {
+        try {
+          if (!window.ymaps3?.ready) return fail();
+          await window.ymaps3.ready;
+          clearTimeout(timeout);
+          resolve(window.ymaps3);
+        } catch {
+          fail();
+        }
+      };
+      document.head.append(script);
+    }).catch((error) => {
+      yandexReady = undefined;
+      throw error;
+    });
+    return yandexReady;
+  }
+
+  async function openYandex() {
+    const request = ++yandexRequest;
+    showNotice("Загрузка Яндекс Карт…");
+    try {
+      const sdk = await loadYandex();
+      if (request !== yandexRequest) return;
+      const { lat, lng } = map.getCenter();
+      const location = { center: [lng, lat], zoom: map.getZoom() };
+      yandexCanvas.classList.add("loading");
+      yandexCanvas.hidden = false;
+      if (!yandexMap) {
+        yandexMap = new sdk.YMap(yandexCanvas, { location, zoomRange: { min: 9, max: 19 } });
+        yandexMap.addChild(new sdk.YMapDefaultSchemeLayer());
+        yandexMap.addChild(new sdk.YMapDefaultFeaturesLayer());
+        const controls = new sdk.YMapControls({ position: "bottom right vertical" });
+        const zoom = element("div", "yandex-zoom");
+        for (const [label, text, step] of [["Приблизить", "+", 1], ["Отдалить", "−", -1]]) {
+          const button = element("button", "map-button", text);
+          button.type = "button";
+          button.setAttribute("aria-label", label);
+          button.addEventListener("click", () => yandexMap.setLocation({ zoom: yandexMap.zoom + step }));
+          zoom.append(button);
+        }
+        controls.addChild(new sdk.YMapControl({}, zoom));
+        yandexMap.addChild(controls);
+        void enableYandexClusters(sdk);
+      } else {
+        yandexMap.setLocation(location);
+      }
+      const selected = activePlace;
+      selection += 1;
+      map.closePopup();
+      clearTimeout(tileTimeout);
+      setLayer("yandex");
+      osmLayer.remove();
+      yandexCanvas.classList.remove("loading");
+      showNotice("");
+      refreshYandexMarkers();
+      if (selected) showYandexPlace(placesById.get(selected), false);
+    } catch {
+      if (request !== yandexRequest) return;
+      yandexMap?.destroy();
+      yandexMap = undefined;
+      yandexCluster = undefined;
+      yandexMarkers.clear();
+      yandexRoute = undefined;
+      chooseLeaflet(basemap === "scheme" ? "scheme" : "osm",
+        "Яндекс Карты не загрузились. Проверьте ключ JavaScript API и разрешённый домен.");
+    }
+  }
+
+  function yandexMarker(place, source) {
+    const pin = element("button", `map-pin yandex-pin ${place.group}`);
+    pin.type = "button";
+    pin.dataset.place = place.id;
+    pin.setAttribute("aria-label", place.name);
+    pin.title = place.name;
+    pin.classList.toggle("selected", activePlace === place.id);
+    pin.append(element("span"));
+    pin.addEventListener("click", () => showYandexPlace(place, false));
+    const coordinates = [...place.point].reverse();
+    return new window.ymaps3.YMapMarker(source ? { coordinates, source } : { coordinates }, pin);
+  }
+
+  async function enableYandexClusters(sdk) {
+    const instance = yandexMap;
+    try {
+      const { YMapClusterer, clusterByGrid } = await sdk.import("@yandex/ymaps3-clusterer");
+      if (instance !== yandexMap) return;
+      const source = "song-map-markers";
+      instance.addChild(new sdk.YMapFeatureDataSource({ id: source }));
+      instance.addChild(new sdk.YMapLayer({ source, type: "markers", zIndex: 1800 }));
+      const clusterer = new YMapClusterer({
+        features: [],
+        method: clusterByGrid({ gridSize: 44 }),
+        marker: ({ id }) => yandexMarker(placesById.get(id), source),
+        cluster: (coordinates, features) => {
+          const button = element("button", "map-cluster yandex-cluster", String(features.length));
+          button.type = "button";
+          button.setAttribute("aria-label", `Мест: ${features.length}. Приблизить`);
+          button.addEventListener("click", () => instance.setLocation({ center: coordinates, zoom: Math.min(19, instance.zoom + 2) }));
+          return new sdk.YMapMarker({ coordinates, source }, button);
+        },
+      });
+      instance.addChild(clusterer);
+      for (const marker of yandexMarkers.values()) instance.removeChild(marker);
+      yandexMarkers.clear();
+      yandexCluster = clusterer;
+      if (basemap === "yandex") refreshYandexMarkers();
+    } catch {
+      // Individual pins remain available when the optional cluster module is unavailable.
+    }
+  }
+
+  function refreshYandexMarkers() {
+    if (yandexCluster) {
+      yandexCluster.update({ features: visible.map((place) => ({
+        id: place.id, type: "Feature", geometry: { type: "Point", coordinates: [...place.point].reverse() },
+        properties: {},
+      })) });
+      return;
+    }
+    for (const marker of yandexMarkers.values()) yandexMap.removeChild(marker);
+    yandexMarkers.clear();
+    for (const place of visible) {
+      const marker = yandexMarker(place);
+      yandexMarkers.set(place.id, marker);
+      yandexMap.addChild(marker);
+    }
+  }
+
+  function closeYandexPopup() {
+    yandexPopup.hidden = true;
+    if (yandexRoute) yandexMap?.removeChild(yandexRoute);
+    yandexRoute = undefined;
+    setActive("");
+  }
+
+  function showYandexPlace(place, zoomIn) {
+    const mentions = visibleMentions.get(place.id);
+    if (!mentions) return;
+    closeYandexPopup();
+    if (zoomIn) yandexMap.setLocation({ center: [...place.point].reverse(), zoom: placeZoom(place) });
+    setActive(place.id);
+    byId("yandex-popup-content").replaceChildren(popup(place, mentions));
+    yandexPopup.hidden = false;
+    yandexPopup.scrollTop = 0;
+    const path = place.path || MAP_ROUTES[place.id];
+    if (path?.length) {
+      const lines = Array.isArray(path[0][0]) ? path : [path];
+      const color = getComputedStyle(document.documentElement).getPropertyValue(`--${place.group}`).trim();
+      yandexRoute = new window.ymaps3.YMapFeature({
+        geometry: { type: "MultiLineString", coordinates: lines.map((line) => line.map((point) => [...point].reverse())) },
+        style: { stroke: [{ width: 4, color }] },
+      });
+      yandexMap.addChild(yandexRoute);
+    }
   }
 
   const clustered = typeof L.markerClusterGroup === "function";
@@ -1163,7 +1362,8 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     const body = element("article", "popup");
     body.append(element("p", "popup-type", place.type), element("h2", "", place.name));
     if (place.note) body.append(element("p", "popup-note", place.note));
-    if (!place.path && !MAP_ROUTES[place.id] && map.getZoom() < placeZoom(place)) {
+    const zoom = basemap === "yandex" ? yandexMap.zoom : map.getZoom();
+    if (!place.path && !MAP_ROUTES[place.id] && zoom < placeZoom(place)) {
       const closer = element("button", "more-detail", "Показать вблизи");
       closer.type = "button";
       closer.addEventListener("click", () => showMarker(place));
@@ -1195,11 +1395,13 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     if (activePlace) {
       rowButtons.get(activePlace)?.removeAttribute("aria-current");
       markers.get(activePlace)?.getElement()?.classList.remove("selected");
+      yandexCanvas.querySelector(`[data-place="${CSS.escape(activePlace)}"]`)?.classList.remove("selected");
     }
     activePlace = placeId;
     if (placeId) {
       rowButtons.get(placeId)?.setAttribute("aria-current", "true");
       markers.get(placeId)?.getElement()?.classList.add("selected");
+      yandexCanvas.querySelector(`[data-place="${CSS.escape(placeId)}"]`)?.classList.add("selected");
     }
     const newHash = placeId ? `#place=${placeId}` : "";
     if (location.hash !== newHash) history.replaceState(null, "", location.pathname + location.search + newHash);
@@ -1210,7 +1412,11 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     const marker = markers.get(place.id);
     if (!marker) return;
     if (window.matchMedia("(max-width: 740px)").matches) {
-      byId("map").scrollIntoView({ block: "center" });
+      (basemap === "yandex" ? yandexCanvas : leafletCanvas).scrollIntoView({ block: "center" });
+    }
+    if (basemap === "yandex") {
+      showYandexPlace(place, true);
+      return;
     }
     map.setView(place.point, placeZoom(place), { animate: false });
     const open = () => {
@@ -1242,6 +1448,18 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
 
   function fitMap() {
     if (visible.length === 0) return;
+    if (basemap === "yandex") {
+      closeYandexPopup();
+      if (visible.length === 1) {
+        yandexMap.setLocation({ center: [...visible[0].point].reverse(), zoom: placeZoom(visible[0]) });
+      } else {
+        const bounds = L.latLngBounds(visible.map((place) => place.point));
+        yandexMap.setLocation({ bounds: [
+          [bounds.getWest(), bounds.getSouth()], [bounds.getEast(), bounds.getNorth()],
+        ] });
+      }
+      return;
+    }
     map.closePopup();
     if (visible.length === 1) {
       map.setView(visible[0].point, placeZoom(visible[0]));
@@ -1307,10 +1525,11 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
   function render() {
     selection += 1;
     map.closePopup();
-    setActive("");
+    closeYandexPopup();
     layer.clearLayers();
     markers.clear();
     rowButtons.clear();
+    visibleMentions.clear();
     visible = [];
     const list = document.createDocumentFragment();
     const query = normalize(search.value);
@@ -1320,10 +1539,12 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
       const matches = getMatches(place, words);
       if (!matches.length) continue;
       visible.push(place);
+      visibleMentions.set(place.id, matches);
       list.append(addPlace(place, matches));
     }
     if (clustered) layer.addLayers([...markers.values()]);
     else for (const marker of markers.values()) layer.addLayer(marker);
+    if (basemap === "yandex") refreshYandexMarkers();
     placeList.replaceChildren(list);
     byId("result-count").textContent = visible.length === placeOrder.length ? String(placeOrder.length) : `${visible.length} из ${placeOrder.length}`;
     byId("empty").hidden = visible.length > 0;
@@ -1391,6 +1612,10 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
     byId("filters").append(button);
   }
   search.addEventListener("input", render);
+  byId("yandex-popup-close").addEventListener("click", closeYandexPopup);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !yandexPopup.hidden && !catalog.open) closeYandexPopup();
+  });
   byId("fit-map").addEventListener("click", fitMap);
   byId("home").addEventListener("click", (event) => {
     event.preventDefault();
@@ -1405,8 +1630,9 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
 
   render();
   fitMap();
-  chooseLayer(!canLoadTiles ? "scheme" : tileLayers.has("yandex") ? "yandex" : "osm");
+  chooseLeaflet(canLoadTiles ? "osm" : "scheme");
   if (placesById.has(deepLink)) showMarker(placesById.get(deepLink));
+  if (canLoadTiles && yandexKey) void openYandex();
 })().catch((error) => {
   const notice = document.getElementById("map-notice");
   notice.textContent = "Не удалось открыть карту. Обновите страницу.";

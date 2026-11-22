@@ -43,7 +43,7 @@
 
 ## Подложка Яндекс Карт
 
-В [кабинете разработчика Яндекса](https://developer.tech.yandex.ru/) получите отдельный браузерный ключ для **Tiles API**. Укажите `lazysquare.github.io` в настройках разрешённых доменов по HTTP Referer. В `index.html` подставьте ключ в `content` тега `meta` с именем `yandex-tiles-key`. Ключ будет виден в сетевых запросах сайта. Используйте ключ только для этой карты и проверяйте лимиты в кабинете Яндекса. С пустым `content` сайт открывает OpenStreetMap. [Документация Tiles API](https://yandex.ru/maps-api/docs/tiles-api/quickstart.html)
+В [кабинете разработчика Яндекса](https://developer.tech.yandex.ru/) подключите **JavaScript API**. На странице этого продукта откройте настройки ключа и укажите `lazysquare.github.io` в поле **Ограничение по HTTP Referer**. В `index.html` подставьте публичный браузерный ключ в `content` тега `meta` с именем `yandex-js-api-key`. Ключ будет виден в сетевых запросах сайта. Пока ключ отсутствует или Яндекс Карты недоступны, сайт переходит на OpenStreetMap. [Документация JavaScript API](https://yandex.ru/maps-api/docs/js-api/common/quickstart.html)
 
 ## Источники и технологии
 
