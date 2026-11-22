@@ -4,6 +4,8 @@
 
 **[Открыть карту](https://lazysquare.github.io/moscow-song-map/)**
 
+![Общий вид Яндекс Карт с поиском и метками песен](map-overview.jpg)
+
 ## Как пользоваться картой
 
 - Найдите место, исполнителя или песню через строку поиска.
@@ -14,6 +16,8 @@
 ### Парк Горького в Wind of Change
 
 [Открыть карточку парка на карте](https://lazysquare.github.io/moscow-song-map/#place=gorky-park)
+
+![Карточка песни Wind of Change группы Scorpions рядом с меткой Парка Горького](park-card.jpg)
 
 ## Как редактировать песни
 
