@@ -1200,7 +1200,7 @@ const MAP_ROUTES = {"mkad":[[[55.58021,37.57571],[55.57602,37.59539],[55.57189,3
         yandexMap = new sdk.YMap(yandexCanvas, { location, zoomRange: { min: 9, max: 19 } });
         yandexMap.addChild(new sdk.YMapDefaultSchemeLayer());
         yandexMap.addChild(new sdk.YMapDefaultFeaturesLayer());
-        const controls = new sdk.YMapControls({ position: "bottom right vertical" });
+        const controls = new sdk.YMapControls({ position: "right" });
         const zoom = element("div", "yandex-zoom");
         for (const [label, text, step] of [["Приблизить", "+", 1], ["Отдалить", "−", -1]]) {
           const button = element("button", "map-button", text);
