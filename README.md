@@ -41,10 +41,6 @@
 
 Сохраните изменения через **Commit changes** в ветку `main`. Сайт обновится после сборки GitHub Pages.
 
-## Подложка Яндекс Карт
-
-В [кабинете разработчика Яндекса](https://developer.tech.yandex.ru/) подключите **JavaScript API**. На странице этого продукта откройте настройки ключа и укажите `lazysquare.github.io` в поле **Ограничение по HTTP Referer**. В `index.html` подставьте публичный браузерный ключ в `content` тега `meta` с именем `yandex-js-api-key`. Ключ будет виден в сетевых запросах сайта. [Документация JavaScript API](https://yandex.ru/maps-api/docs/js-api/common/quickstart.html)
-
 ## Источники и технологии
 
 - Карта работает на [JavaScript API Яндекс Карт](https://yandex.ru/maps-api/docs/js-api/).
